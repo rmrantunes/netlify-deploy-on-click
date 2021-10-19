@@ -3,8 +3,8 @@ import type { AppProps } from "next/app";
 import useStaging from "../hooks/useStaging";
 import axios from "axios";
 
-async function promoteToProd(deploy_id: string) {
-  await axios.post(`/api/promote-to-prod?deploy_id=${deploy_id}`, undefined);
+async function promoteToProd() {
+  await axios.post(`/api/promote-to-prod`);
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       {staging.isStaging && (
         <button
           style={{ position: "fixed", right: "3rem", top: "3rem" }}
-          onClick={() => promoteToProd(staging.deployId!)}
+          onClick={promoteToProd}
         >
           Aprovar e publicar
         </button>

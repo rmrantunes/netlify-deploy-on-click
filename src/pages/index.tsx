@@ -1,18 +1,10 @@
 import type { NextPage } from "next";
-import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect } from "react";
-import useIsStaging from "../hooks/useIsStaging";
+
 import styles from "../styles/Home.module.css";
 
-const STAGING_BRANCH_NAME = "dev";
-
 const Home: NextPage = () => {
-  const isStaging = useIsStaging();
-
-  console.log(isStaging);
-
   return (
     <div className={styles.container}>
       <Head>

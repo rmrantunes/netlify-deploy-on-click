@@ -2,19 +2,48 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 
+const githubHeaders = {
+  Authorization: `token ${process.env.GITHUB_OAUTH}`,
+};
+
+async function createPullRequest() {
+  return await axios.post<{ number: string }>(
+    `https://api.github.com/repos/rmrantunes/netlify-deploy-on-click/pulls`,
+    {
+      head: "dev",
+      base: "main",
+      title: "Aprovado pelo cliente",
+    },
+    {
+      headers: githubHeaders,
+    }
+  );
+}
+
+async function mergePullRequest(pullRequestNumber: string) {
+  return await axios.put(
+    `https://api.github.com/repos/rmrantunes/netlify-deploy-on-click/pulls/${pullRequestNumber}/merge`,
+    {
+      commit_title: "Aprovado pelo cliente",
+    },
+    {
+      headers: {
+        Authorization: "token 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",
+      },
+    }
+  );
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
     try {
-      const promoteEndpoint = `https://api.netlify.com/api/v1/deploys/${req.query.deploy_id}/restore`;
+      const { data: pullRequest } = await createPullRequest();
+      console.log(pullRequest.number);
 
-      await axios.post(promoteEndpoint, undefined, {
-        headers: {
-          Authorization: "Bearer " + process.env.NETLIFY_ACCESS_TOKEN,
-        },
-      });
+      await mergePullRequest(pullRequest.number);
     } catch (error) {
       return res.json({ error });
     }

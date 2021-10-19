@@ -11,8 +11,12 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "POST") {
-    await axios.post(
-      "https://api.netlify.com/build_hooks/616ee0a2d05efe28b1966eb4"
-    );
+    const promoteEndpoint = `https://api.netlify.com/api/v1/deploys/${req.query.deploy_id}/restore`;
+
+    await axios.post(promoteEndpoint, undefined, {
+      headers: {
+        Authorization: "Bearer " + process.env.NETLIFY_ACCESS_TOKEN,
+      },
+    });
   }
 }

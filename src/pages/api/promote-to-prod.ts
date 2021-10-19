@@ -27,9 +27,7 @@ async function mergePullRequest(pullRequestNumber: string) {
       commit_title: "Aprovado pelo cliente",
     },
     {
-      headers: {
-        Authorization: "token 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",
-      },
+      headers: githubHeaders,
     }
   );
 }

@@ -1,12 +1,19 @@
 import type { NextPage } from "next";
+import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect } from "react";
 import styles from "../styles/Home.module.css";
 
+const STAGING_BRANCH_NAME = "dev";
+
 const Home: NextPage = () => {
+  const isStaging = window.location.href
+    .split("//")[1]
+    .startsWith(STAGING_BRANCH_NAME);
+
   useEffect(() => {
-    console.log(process.env.NODE_ENV);
+    console.log({ isStaging });
   }, []);
 
   return (

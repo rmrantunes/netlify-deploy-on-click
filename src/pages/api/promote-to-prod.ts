@@ -39,9 +39,8 @@ export default async function handler(
   if (req.method === "POST") {
     try {
       const { data: pullRequest } = await createPullRequest();
-      console.log(pullRequest.number);
-
       await mergePullRequest(pullRequest.number);
+      res.json({ ok: true, message: "Promoted to production" });
     } catch (error) {
       return res.json({ error });
     }

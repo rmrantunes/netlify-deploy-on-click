@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       {staging.isStaging && (
         <button
           style={{ position: "fixed", right: "3rem", top: "3rem" }}
-          onClick={promoteToProd}
+          onClick={() => promoteToProd()}
         >
           Aprovar e publicar
         </button>

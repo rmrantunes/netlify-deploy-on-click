@@ -8,11 +8,11 @@ import styles from "../styles/Home.module.css";
 const STAGING_BRANCH_NAME = "dev";
 
 const Home: NextPage = () => {
-  const isStaging = window.location.href
-    .split("//")[1]
-    .startsWith(STAGING_BRANCH_NAME);
-
   useEffect(() => {
+    const isStaging = window
+      ? window.location.href.split("//")[1].startsWith(STAGING_BRANCH_NAME)
+      : undefined;
+
     console.log({ isStaging });
   }, []);
 

@@ -7,7 +7,7 @@ import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
   useEffect(() => {
-    console.log(process.env.NODE_ENV);
+    console.log(process.env.CONTEXT);
   }, []);
 
   return (

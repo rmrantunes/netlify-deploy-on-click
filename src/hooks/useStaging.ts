@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 
 export default function useStaging(stagingBranchName = "dev") {
-  const [isStaging, setIsStaging] = useState(false);
+  const [isStaging, setIsStaging] = useState(
+    process.env.CONTEXT !== "production"
+  );
   const [deployId, setDeployId] = useState<string | null>(null);
 
   useEffect(() => {

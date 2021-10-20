@@ -1,45 +1,23 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import axios from "axios";
 
-const githubHeaders = {
-  Authorization: `token ${process.env.GITHUB_OAUTH}`,
-};
+import { mergePullRequest, createProdPullRequest } from "../../requests/github";
 
-async function createPullRequest() {
-  return await axios.post<{ number: string }>(
-    `https://api.github.com/repos/rmrantunes/netlify-deploy-on-click/pulls`,
-    {
-      head: "dev",
-      base: "main",
-      title: "Aprovado pelo cliente",
-    },
-    {
-      headers: githubHeaders,
-    }
-  );
-}
-
-async function mergePullRequest(pullRequestNumber: string) {
-  return await axios.put(
-    `https://api.github.com/repos/rmrantunes/netlify-deploy-on-click/pulls/${pullRequestNumber}/merge`,
-    {
-      commit_title: "Aprovado pelo cliente",
-    },
-    {
-      headers: githubHeaders,
-    }
-  );
-}
+const githubOAuthToken = process.env.GITHUB_OAUTH;
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "POST") {
+  if (req.method === "POST" && githubOAuthToken) {
     try {
-      const { data: pullRequest } = await createPullRequest();
-      await mergePullRequest(pullRequest.number);
+      const { data: pullRequest } = await createProdPullRequest({
+        githubOAuthToken,
+      });
+      await mergePullRequest({
+        pullRequestNumber: pullRequest.number,
+        githubOAuthToken,
+      });
       res.json({ ok: true, message: "Promoted to production" });
     } catch (error) {
       return res.json({ error });

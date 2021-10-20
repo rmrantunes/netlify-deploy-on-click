@@ -7,8 +7,8 @@ import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
   useEffect(() => {
-    console.log("context", process.env.CONTEXT);
-    console.log(process.env.CONTEXT);
+    console.log("context", process.env.IS_DEVELOPMENT);
+    console.log(process.env);
   }, []);
 
   return (
